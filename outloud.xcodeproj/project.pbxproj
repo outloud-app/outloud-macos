@@ -6,13 +6,31 @@
 	objectVersion = 110;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A11000000000000000000001 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = A11000000000000000000002 /* Sparkle */; };
+		A22000000000000000000001 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = A22000000000000000000002 /* Lottie */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		1845B31830936602000910AC /* outloud.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = outloud.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A11000000000000000000004 /* Exceptions for "outloud" folder in "outloud" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1845B31730936602000910AC /* outloud */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1845B31A30936602000910AC /* outloud */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A11000000000000000000004 /* Exceptions for "outloud" folder in "outloud" target */,
+			);
 			path = outloud;
 			sourceTree = "<group>";
 		};
@@ -22,6 +40,8 @@
 		1845B31530936602000910AC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				A11000000000000000000001 /* Sparkle in Frameworks */,
+				A22000000000000000000001 /* Lottie in Frameworks */,
 			);
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -53,6 +73,7 @@
 				1845B31430936602000910AC /* Sources */,
 				1845B31530936602000910AC /* Frameworks */,
 				1845B31630936602000910AC /* Resources */,
+				A33000000000000000000001 /* Refresh legacy icon fallback */,
 			);
 			buildRules = (
 			);
@@ -60,6 +81,10 @@
 				1845B31A30936602000910AC /* outloud */,
 			);
 			name = outloud;
+			packageProductDependencies = (
+				A22000000000000000000002 /* Lottie */,
+				A11000000000000000000002 /* Sparkle */,
+			);
 			productName = outloud;
 			productReference = 1845B31830936602000910AC /* outloud.app */;
 			productType = "com.apple.product-type.application";
@@ -72,7 +97,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2710;
-				LastUpgradeCheck = 2710;
+				LastUpgradeCheck = 2720;
 				TargetAttributes = {
 					1845B31730936602000910AC = {
 						CreatedOnToolsVersion = 27.1;
@@ -88,6 +113,10 @@
 			);
 			mainGroup = 1845B30F30936602000910AC;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A22000000000000000000003 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+				A11000000000000000000003 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1845B31930936602000910AC /* Products */;
 			projectDirPath = "";
@@ -105,6 +134,23 @@
 			);
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A33000000000000000000001 /* Refresh legacy icon fallback */ = {
+			isa = PBXShellScriptBuildPhase;
+			inputPaths = (
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/OutloudSheep.icns",
+			);
+			name = "Refresh legacy icon fallback";
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/AppIcon.icns",
+			);
+			shellPath = /bin/sh;
+			shellScript = (
+				"cp \"$SCRIPT_INPUT_FILE_0\" \"$SCRIPT_OUTPUT_FILE_0\"",
+			);
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1845B31430936602000910AC /* Sources */ = {
@@ -149,6 +195,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 8WJ5R8FYT9;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -169,11 +216,12 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -213,6 +261,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 8WJ5R8FYT9;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -227,10 +276,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
@@ -238,23 +288,37 @@
 		1845B32430936604000910AC /* Debug configuration for PBXNativeTarget "outloud" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = OutloudSheep;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = outloud/Outloud.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 8WJ5R8FYT9;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = outloud/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Outloud;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_SUAutomaticallyUpdate = YES;
+				INFOPLIST_KEY_SUEnableAutomaticChecks = YES;
+				INFOPLIST_KEY_SUEnableInstallerLauncherService = YES;
+				INFOPLIST_KEY_SUFeedURL = "https://tryoutloud.pages.dev/updates/appcast.xml";
+				INFOPLIST_KEY_SUPublicEDKey = "UPVLZ0Sa5r7bddxYrw77xoYQZJIanEeDnKgT4nQXNRk=";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OUTLOUD_LICENSE_ENVIRONMENT = live;
+				OUTLOUD_LICENSE_SERVER_URL = "https://outloud-license-api.wirebuilds-outloud.workers.dev";
+				OUTLOUD_RESEARCH_SERVER_URL = "http://127.0.0.1:8766";
+				OUTLOUD_UPDATE_FEED_URL = "https://tryoutloud.pages.dev/updates/appcast.xml";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wirebuilds.outloud;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -270,23 +334,36 @@
 		1845B32530936604000910AC /* Release configuration for PBXNativeTarget "outloud" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = OutloudSheep;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = outloud/Outloud.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 8WJ5R8FYT9;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
+				ENABLE_USER_SELECTED_FILES = readwrite;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = outloud/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Outloud;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_SUAutomaticallyUpdate = YES;
+				INFOPLIST_KEY_SUEnableAutomaticChecks = YES;
+				INFOPLIST_KEY_SUEnableInstallerLauncherService = YES;
+				INFOPLIST_KEY_SUFeedURL = "https://tryoutloud.pages.dev/updates/appcast.xml";
+				INFOPLIST_KEY_SUPublicEDKey = "UPVLZ0Sa5r7bddxYrw77xoYQZJIanEeDnKgT4nQXNRk=";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OUTLOUD_LICENSE_ENVIRONMENT = live;
+				OUTLOUD_LICENSE_SERVER_URL = "https://outloud-license-api.wirebuilds-outloud.workers.dev";
+				OUTLOUD_UPDATE_FEED_URL = "https://tryoutloud.pages.dev/updates/appcast.xml";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wirebuilds.outloud;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -319,6 +396,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A11000000000000000000003 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = exactVersion;
+				version = 2.10.0;
+			};
+		};
+		A22000000000000000000003 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = exactVersion;
+				version = 4.6.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A11000000000000000000002 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A11000000000000000000003 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+		A22000000000000000000002 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A22000000000000000000003 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1845B31030936602000910AC /* Project object */;
 	validationLevel = 1;

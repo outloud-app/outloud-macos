@@ -1,0 +1,51 @@
+{
+  "fill-specializations": [
+    {
+      "value": {
+        "linear-gradient": [
+          "srgb:0.30,0.035,0.13,1",
+          "srgb:0.12,0.015,0.055,1"
+        ]
+      }
+    },
+    {
+      "appearance": "dark",
+      "value": {
+        "linear-gradient": [
+          "srgb:0.14,0.04,0.085,1",
+          "srgb:0.055,0.02,0.035,1"
+        ]
+      }
+    }
+  ],
+  "groups": [
+    {
+      "layers": [
+        {
+          "image-name": "Sheep.png",
+          "name": "Outloud sheep",
+          "position": {
+            "scale": 1.65,
+            "translation-in-points": [
+              0,
+              0
+            ]
+          },
+          "glass": true
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.25
+      },
+      "specular": true,
+      "translucency": {
+        "enabled": true,
+        "value": 0.15
+      }
+    }
+  ],
+  "supported-platforms": {
+    "squares": "shared"
+  }
+}

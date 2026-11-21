@@ -1,0 +1,1 @@
+Android, Linux and HarmonyOS: Simple Icons CC0 https://github.com/simple-icons/simple-icons; respective trademarks remain their owners. Windows four-pane mark. Apple uses the system Apple logo glyph. WorkspaceReady.wav is the user-selected soft-mechanism audition (02-soft-mechanism.wav), an edited version of the user-provided reference recording.
