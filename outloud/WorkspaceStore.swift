@@ -31,6 +31,7 @@ final class WorkspaceStore {
     var isResearching: Bool { researchingProjectID != nil && researchingProjectID == selectedProjectID }
     var researchingProjectID: UUID?
     var researchErrors: [UUID: String] = [:]
+    var researchCoverage: [UUID: ResearchWorkspaceReply.Results] = [:]
     var researchNeedsDetails: Set<UUID> = []
     private var researchGeneration = 0
     private var openingResearchTask: Task<Void, Never>?
@@ -135,6 +136,7 @@ final class WorkspaceStore {
         drafts.removeAll { $0.projectID == id }
         watchTargets.removeAll { $0.projectID == id }
         researchErrors[id] = nil
+        researchCoverage[id] = nil
         researchNeedsDetails.remove(id)
         persist()
         return true
@@ -297,8 +299,10 @@ final class WorkspaceStore {
 
     func applyResearch(_ workspace: ResearchWorkspaceReply, to projectID: UUID, preservingExisting: Bool = false) {
         guard projects.contains(where: { $0.id == projectID }) else { return }
-        let statuses = Dictionary(uniqueKeysWithValues: references.filter { $0.projectID == projectID && $0.conversationStatus != nil }.map { ($0.id, $0.conversationStatus!) })
+        if workspace.results.quality_report != nil { researchCoverage[projectID] = workspace.results }
         let matched = workspace.references(projectID: projectID)
+        guard !matched.isEmpty else { return }
+        let statuses = Dictionary(uniqueKeysWithValues: references.filter { $0.projectID == projectID && $0.conversationStatus != nil }.map { ($0.id, $0.conversationStatus!) })
         var updated = references
         // Preserve manual imports, saved references and every draft when research changes.
         if !preservingExisting {

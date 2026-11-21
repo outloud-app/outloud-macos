@@ -109,13 +109,13 @@ struct WorkspaceChecks {
         precondition(restored.references.first(where: { $0.id == mapped[1].id })?.conversationStatus == "lead")
         precondition(WorkspaceStore(storageURL: file).references.first(where: { $0.id == mapped[1].id })?.conversationStatus == "lead")
         restored.setConversationStatus(mapped[1], status: "new")
-        restored.toggleSaved(mapped[0])
         let empty = try JSONDecoder().decode(ResearchWorkspaceReply.self, from: Data(#"{"id":"workspace123","results":{"discover":[],"conversations":[]}}"#.utf8))
         let retainedBeforePartial = restored.projectReferences.count
         restored.applyResearch(empty, to: projectID, preservingExisting: true)
         precondition(restored.projectReferences.count == retainedBeforePartial, "Partial refresh must keep visible existing cards")
         restored.applyResearch(empty, to: projectID)
-        precondition(restored.references.contains(where: { $0.id == mapped[0].id }))
+        precondition(restored.references.contains(where: { $0.id == mapped[0].id }), "An empty refresh must preserve unsaved research cards")
+        restored.toggleSaved(mapped[0])
         precondition(restored.references.first(where: { $0.id == mapped[1].id })?.conversationStatus == "new")
         // Another project's manual reference survived both refreshes.
         precondition(restored.references.contains(where: { $0.title == "Reference" }))

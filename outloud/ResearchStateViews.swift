@@ -15,7 +15,54 @@ struct NativeResearchStatus: View {
                     Button("Try again") { store.refreshResearch() }.buttonStyle(AppButtonStyle())
                 }
             }.padding(15).background(Palette.surface).padding(.horizontal,22).padding(.bottom,12)
+        } else if let message = coverageMessage {
+            Text(message)
+                .font(AppFont.ui(12))
+                .foregroundStyle(Palette.secondary)
+                .lineLimit(1)
+                .padding(.horizontal, 22)
+                .padding(.bottom, 8)
         }
+    }
+
+    private var coverageMessage: String? {
+        guard let id = store.selectedProjectID,
+              let results = store.researchCoverage[id],
+              let report = results.quality_report,
+              let counts = report.lane_counts else { return nil }
+        let lanes: [(key: String, label: String)]
+        if store.area == .home {
+            lanes = [("discover", "For You"), ("competitors", "Competitors"), ("conversations", "Conversations")]
+        } else if store.area == .workspace {
+            switch store.page {
+            case .discover:
+                lanes = store.discoveryLane == "Competitors" ? [("competitors", "Competitors")] : [("discover", "For You")]
+            case .conversations:
+                lanes = [("conversations", "Conversations")]
+            default:
+                return nil
+            }
+        } else {
+            return nil
+        }
+        let shortfalls = lanes.flatMap { lane -> [String] in
+            if lane.key == "conversations", let platforms = report.conversation_platform_counts {
+                let minimum = (report.release_minimum?["conversations"] ?? 30) / 2
+                return ["X", "Reddit"].compactMap { platform in
+                    guard let count = platforms[platform], count < minimum else { return nil }
+                    return "\(platform) \(count) of \(minimum)"
+                }
+            }
+            let minimum = report.release_minimum?[lane.key] ?? 15
+            guard let count = counts[lane.key], count < minimum else { return [] }
+            return ["\(lane.label) \(count) of \(minimum)"]
+        }
+        guard !shortfalls.isEmpty else { return nil }
+        let issues = (results.research_issues ?? []) + (report.blockers ?? [])
+        let paused = issues.contains { $0.localizedCaseInsensitiveContains("fresh collection is paused")
+            || $0.localizedCaseInsensitiveContains("monthly account allowance") }
+        return shortfalls.joined(separator: " · ") + (paused ? ". Fresh collection is paused." : ".")
+
     }
 }
 

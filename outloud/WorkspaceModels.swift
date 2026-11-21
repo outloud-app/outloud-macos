@@ -103,6 +103,7 @@ struct ReferenceItem: Identifiable, Codable, Equatable {
     var measuredViews: Int?
     var measuredLikes: Int?
     var measuredComments: Int?
+    var measuredScore: Int?
     var conversationStatus: String?
     var matchedTopics: [String]?
 }

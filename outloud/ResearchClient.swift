@@ -52,10 +52,31 @@ struct ResearchWorkspaceReply: Decodable {
         return (content + discussions).filter { seen.insert($0.id).inserted }
     }
 
+    struct QualityReport: Decodable {
+        let lane_counts: [String: Int]?
+        let conversation_platform_counts: [String: Int]?
+        let release_minimum: [String: Int]?
+        let blockers: [String]?
+        let retrieval: Retrieval?
+
+        struct Retrieval: Decodable {
+            let native_collections: [Collection]?
+
+            struct Collection: Decodable {
+                let platform: String
+                let lane: String
+                let returned: Int?
+                let status: String?
+            }
+        }
+    }
+
     struct Results: Decodable {
         let discover: [ResearchSource]
         let conversations: [ResearchSource]
         let notice: String?
+        let quality_report: QualityReport?
+        let research_issues: [String]?
     }
 }
 
@@ -79,7 +100,7 @@ struct ResearchSource: Decodable {
     let conversation_signal: ConversationSignal?
     struct ConversationSignal: Decodable { let type: String; let quote: String }
     struct Metrics: Decodable {
-        let views: Int?; let plays: Int?; let likes: Int?; let comments: Int?
+        let views: Int?; let plays: Int?; let likes: Int?; let comments: Int?; let score: Int?
         let provider: String?; let checked_at: String?
     }
     struct Media: Decodable { let type: String; let url: String?; let poster: String? }
@@ -116,6 +137,7 @@ struct ResearchSource: Decodable {
             item.measuredViews = (metrics.views ?? metrics.plays).flatMap { $0 >= 0 ? $0 : nil }
             item.measuredLikes = metrics.likes.flatMap { $0 >= 0 ? $0 : nil }
             item.measuredComments = metrics.comments.flatMap { $0 >= 0 ? $0 : nil }
+            item.measuredScore = metrics.score
         }
         if let published_at {
             let formatter = ISO8601DateFormatter()
@@ -246,7 +268,8 @@ struct ResearchClient {
         guard id.range(of: "^[a-zA-Z0-9_-]{8,100}$", options: .regularExpression) != nil else { throw ResearchError.response }
         let path = "desktop/projects/" + id + "/stream"
         var state: ProgressReply = try await request(path, body: Data("{}".utf8))
-        let deadline = Date().addingTimeInterval(360)
+        let maximumDeadline = Date().addingTimeInterval(900)
+        var deadline = min(Date().addingTimeInterval(360), maximumDeadline)
         var deliveredRevision: Int?
         var deliveredUnversionedSnapshot = false
         while true {
@@ -254,9 +277,15 @@ struct ResearchClient {
             if state.status == "complete", let workspace = state.workspace { return workspace }
             if let partial = state.workspace {
                 if let revision = state.revision {
-                    if revision != deliveredRevision { onProgress?(partial); deliveredRevision = revision }
+                    if revision != deliveredRevision {
+                        onProgress?(partial)
+                        deliveredRevision = revision
+                        deadline = min(Date().addingTimeInterval(360), maximumDeadline)
+                    }
                 } else if !deliveredUnversionedSnapshot {
-                    onProgress?(partial); deliveredUnversionedSnapshot = true
+                    onProgress?(partial)
+                    deliveredUnversionedSnapshot = true
+                    deadline = min(Date().addingTimeInterval(360), maximumDeadline)
                 }
             }
             if state.status == "failed" { throw ResearchError.rejected(state.error ?? "Research could not finish. Your existing results are safe.") }

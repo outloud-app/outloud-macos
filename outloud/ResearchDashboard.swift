@@ -80,8 +80,18 @@ private struct ResearchBandHeader: View {
 }
 
 private func canShowInResearchFeed(_ item: ReferenceItem) -> Bool {
-    guard item.retrievedFromResearch == true, item.category == "Video" else { return true }
-    return (item.measuredViews ?? 0) >= 1_000
+    guard item.retrievedFromResearch == true else { return true }
+    let views = item.measuredViews
+    if !item.isCompetitor { return item.category != "Video" || (views ?? 0) >= 1_000 }
+    let likes = item.measuredLikes ?? 0
+    let comments = item.measuredComments ?? 0
+    if item.platform == .reddit { return (item.measuredScore ?? 0) >= 10 || comments >= 5 }
+    if item.category == "Video" { return (views ?? 0) >= 3_000 && (likes >= 15 || comments >= 5) }
+    if item.platform == .x {
+        if let views { return views >= 500 && (likes >= 10 || comments >= 4) }
+        return likes >= 20 || comments >= 8
+    }
+    return likes >= 15 || comments >= 5
 }
 
 private struct ResearchEmpty: View {
